@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Checker</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('chk.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    .container {
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      max-width: 700px;
+      margin: auto;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: yellow;
+      text-shadow: 2px 2px black;
+    }
+
+    textarea {
+      width: 100%;
+      height: 160px;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      resize: none;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 48%;
+      padding: 15px;
+      font-size: 20px;
+      margin: 5px 1%;
+      background-color: yellow;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .results {
+      margin-top: 20px;
+    }
+
+    .result-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+
+    .result-box h2 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+      color: white;
+      text-align: center;
+      text-decoration: underline;
+    }
+
+    .result-box pre {
+      font-size: 18px;
+      word-wrap: break-word;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      margin-top: 30px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Checker</h1>
+
+    <textarea id="cardList" placeholder="Cole aqui a lista de cartões... Ex: 4111111111111111|12|2025|123"></textarea>
+
+    <div style="display: flex; justify-content: space-between;">
+      <button onclick="start()">Iniciar</button>
+      <button onclick="stop()">Parar</button>
+    </div>
+
+    <div class="results">
+      <div class="result-box" id="livesBox">
+        <h2>Lives</h2>
+        <pre id="lives"></pre>
+      </div>
+      <div class="result-box" id="reprovadasBox">
+        <h2>Reprovadas</h2>
+        <pre id="reprovadas"></pre>
+      </div>
+    </div>
+
+    <!-- IFRAME do Guariguari (opcional, comente se não quiser agora) -->
+    <iframe id="guariguariFrame" src="https://www.guariguari.com"></iframe>
+  </div>
+
+  <script>
+    let running = false;
+    let current = 0;
+    let cards = [];
+
+    function start() {
+      if (running) return;
+      running = true;
+      cards = document.getElementById("cardList").value.trim().split("\n");
+      current = 0;
+      processCard();
+    }
+
+    function stop() {
+      running = false;
+    }
+
+    function processCard() {
+      if (!running || current >= cards.length) {
+        running = false;
+        return;
+      }
+
+      const card = cards[current].trim();
+
+      // Simulação da verificação de cartão
+      const isLive = Math.random() > 0.5; // Simula live/reprovado aleatório
+      if (isLive) {
+        document.getElementById("lives").innerText += card + " ✅\n";
+      } else {
+        document.getElementById("reprovadas").innerText += card + " ❌\n";
+      }
+
+      current++;
+      setTimeout(processCard, 1500); // Atraso entre testes
+    }
+  </script>
+
+</body>
+</html>
